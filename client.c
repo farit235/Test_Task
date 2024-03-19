@@ -30,14 +30,14 @@ int main(int argc, const char** argv) {
     int sockD = socket(AF_INET, SOCK_STREAM, 0);
     struct sockaddr_in servAddr;
     servAddr.sin_family = AF_INET;
-    servAddr.sin_port = htons(9000); 
+    servAddr.sin_port = htons(9001); 
     servAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     // подключение к сокету с указанием структуры адреса, назначаемого на данный сокет
     int connectStatus = connect(sockD, (struct sockaddr*)&servAddr, sizeof(servAddr));  
     if (connectStatus == -1) { 
         printf("Error...\n"); 
-        exit(0);
-    } 
+        return 1;
+    }
     
     chatting_function(sockD);
 

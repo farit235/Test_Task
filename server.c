@@ -38,7 +38,7 @@ int main(int argc, const char** argv) {
     int servSockD = socket(AF_INET, SOCK_STREAM, 0);
     if (servSockD == -1) { 
         printf("Socket creation failed...\n"); 
-        exit(0);
+        return 1;
     }
     else {
         printf("Socket succesfully created!\n");
@@ -47,15 +47,17 @@ int main(int argc, const char** argv) {
     struct sockaddr_in servAddr, client;
     bzero(&servAddr, sizeof(servAddr));
     servAddr.sin_family = AF_INET;
-    servAddr.sin_port = htons(9000); 
+    servAddr.sin_port = htons(9001); 
     servAddr.sin_addr.s_addr = INADDR_ANY;
 
     bind(servSockD, (struct sockaddr*)&servAddr, sizeof(servAddr)); 
     listen(servSockD, 1);
 
-    int clientSocket = accept(servSockD, (struct sockaddr*)&client, sizeof(client)); 
+    int len = sizeof(client);
+    int clientSocket = accept(servSockD, (struct sockaddr*)&client, &len); 
+    
     //send(clientSocket, serMsg, sizeof(serMsg), 0); 
-
+    printf("clientSocket: %d\n", clientSocket);
     chatting_function(clientSocket);
 
     close(servSockD);
